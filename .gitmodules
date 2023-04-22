@@ -1,0 +1,3 @@
+[submodule "nfl-elo-game"]
+	path = nfl-elo-game
+	url = https://github.com/fivethirtyeight/nfl-elo-game.git
