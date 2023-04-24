@@ -2,6 +2,7 @@ import rpy2.robjects as robjects
 import pandas as pd
 from rpy2.robjects import pandas2ri
 import sys
+from rpy2.robjects.conversion import rpy2py
 
 sys.path.append("./nfl-elo-game")
 
@@ -21,8 +22,8 @@ games = Util.read_games("nfl-elo-game/data/nfl_games.csv")
 
 # Forecast every game using the R code
 games_df = robjects.r("forecast")(pd.DataFrame(games))
-print(games_df)
-games = games_df.to_dict("records")
+print(type(games_df))
+games = rpy2py(games_df).to_dict("records")
 # quit()
 
 # Evaluate our forecasts against Elo
