@@ -2,6 +2,9 @@
 K <- 20
 REVERT <- 1 / 3.0
 
+MOV_PARAM_1 <- 0.001
+MOV_PARAM_2 <- 2.2
+
 elo_odds <- function(team_elos, teamA, teamB) {
     base_elo_diff <- as.double(team_elos[teamB][2]) -
                      as.double(team_elos[teamA][2])
@@ -37,16 +40,11 @@ forecast <- function(games) {
         )
         games[i, "my_prob1"] <- odds
 
-        #print(team_elos)
-        #print(team_elos[team_elos$team == games$team1[i], ])
-        #score_diff <- abs(games$score1[i] - games$score2[i])
-        #score_odds <- log(max(score_diff, 1) + 1.0) / 2.2
+        winner_elo_diff <- games$result1[i] - odds
 
-        #print(odds)
-        #print(score_odds)
-        #quit()
+        mov <- log(max(abs(games$score1[i] - games$score2[i]), 1) + 1.0) * MOV_PARAM_2 / (winner_elo_diff * MOV_PARAM_1 + MOV_PARAM_2)
 
-        shift <- K * (games$result1[i] - odds)# * if (games$result1[i]) 1 else -1
+        shift <- K * winner_elo_diff * mov
 
         team_elos[team_elos$team == games$team1[i], ]$elo <- team_elos[
             team_elos$team == games$team1[i],
