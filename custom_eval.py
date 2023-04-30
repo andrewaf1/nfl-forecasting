@@ -21,8 +21,15 @@ games = Util.read_games("nfl-elo-game/data/nfl_games.csv")
 # quit()
 
 # Forecast every game using the R code
-games_df = robjects.r("forecast")(pd.DataFrame(games))
+#games_df = robjects.r("forecast")(pd.DataFrame(games))
+#games_df = robjects.r("forecast_default_params")(pd.DataFrame(games))
+#games_df = robjects.r("forecast_abc")(pd.DataFrame(games))
+games_df = robjects.r("forecast_abc_smc")(pd.DataFrame(games))
+#games_df = robjects.r("forecast_saved_params")(pd.DataFrame(games))
+
+
 print(type(games_df))
+
 games = rpy2py(games_df).to_dict("records")
 # quit()
 
